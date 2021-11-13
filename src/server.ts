@@ -17,17 +17,12 @@ class server {
     config() {
 
         this.app.set('port', config.port);
-        
-        let corsOptions = {
-            origin: 'http://localhost:8100',
-            optionsSuccessStatus: 200 
-        }
 
         //middleware
 
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
-        this.app.use(cors(corsOptions));
+        this.app.use(cors());
 
     }
 
