@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import ru from './routes/routeuser';
 import config from './config/config';
+import cors from 'cors'
 
 class server {
 
