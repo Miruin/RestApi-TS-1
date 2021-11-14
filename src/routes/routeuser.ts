@@ -1,28 +1,23 @@
 import {Request, Response, Router} from 'express'
 import { auth } from '../helpers/service'
 import cu from '../controllers/controllersUser'
-import cors from 'cors'
 
 
 
 class Rutasuser{
 
     router: Router;
-    c: any;
 
     constructor() {
 
-        this.router = Router();
-        this.c = cors();        
+        this.router = Router();      
         this.routes();
 
     }
 
     routes() {
         
-        this.router.options('*', this.c())
-        
-        this.router.post('/registro',this.c(), cu.reguser)
+        this.router.post('/registro', cu.reguser)
 
         this.router.post('/log', cu.login)
 
@@ -39,7 +34,6 @@ class Rutasuser{
 }
 
 const ru = new Rutasuser();
-ru.routes();
 
 export default ru.router
 
