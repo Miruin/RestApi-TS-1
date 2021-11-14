@@ -1,6 +1,7 @@
 import {Request, Response, Router} from 'express'
 import { auth } from '../helpers/service'
 import cu from '../controllers/controllersUser'
+import cors from 'cors'
 
 
 
@@ -17,7 +18,15 @@ class Rutasuser{
 
     routes() {
         
-        this.router.options('/registro', (req: Request, res: Response, next: any) =>{
+        this.router.options('/registro', cors({
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            exposedHeaders: ['Content-Range', 'X-Content-Range'],
+            allowedHeaders: ['Content-Type', 'authorization'],
+            credentials: true,
+            optionsSuccessStatus: 200,
+            preflightContinue: true
+        }), (req: Request, res: Response, next: any) =>{
 
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -27,12 +36,20 @@ class Rutasuser{
             if ('OPTIONS' == req.method) {
                 return res.sendStatus(200);
             } else {
-                 next();
+                next();
             }
 
         })
-        
-        this.router.post('/registro', cu.reguser)
+
+        this.router.post('/registro',cors({
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            exposedHeaders: ['Content-Range', 'X-Content-Range'],
+            allowedHeaders: ['Content-Type', 'authorization'],
+            credentials: true,
+            optionsSuccessStatus: 200,
+            preflightContinue: true
+        }), cu.reguser)
 
         this.router.post('/log', cu.login)
 
