@@ -24,7 +24,7 @@ class server {
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
         this.app.use(cors({
-            origin: true,
+            origin: '*',
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
             exposedHeaders: ['Content-Range', 'X-Content-Range'],
             allowedHeaders: ['Content-Type', 'authorization'],
