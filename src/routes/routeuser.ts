@@ -20,6 +20,8 @@ class Rutasuser{
 
     routes() {
         
+        this.router.options('*', this.c())
+        
         this.router.post('/registro',this.c(), cu.reguser)
 
         this.router.post('/log', cu.login)
