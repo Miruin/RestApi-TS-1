@@ -8,23 +8,19 @@ import cors from 'cors'
 class Rutasuser{
 
     router: Router;
+    c: any;
 
     constructor() {
 
         this.router = Router();
+        this.c = cors();        
         this.routes();
 
     }
 
     routes() {
         
-        const options = {
-            origin: '*',
-            methods: ["POST"],
-          };
-
-
-        this.router.post('/registro',cors(options), cu.reguser)
+        this.router.post('/registro',this.c(), cu.reguser)
 
         this.router.post('/log', cu.login)
 
