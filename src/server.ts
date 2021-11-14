@@ -23,7 +23,16 @@ class server {
 
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: true,
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            exposedHeaders: ['Content-Range', 'X-Content-Range'],
+            allowedHeaders: ['Content-Type', 'authorization'],
+            maxAge: 100,
+            credentials: true,
+            optionsSuccessStatus: 200,
+            preflightContinue: true
+        }));
 
     }
 
