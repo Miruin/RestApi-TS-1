@@ -1,6 +1,7 @@
 import {Request, Response, Router} from 'express'
 import { auth } from '../helpers/service'
 import cu from '../controllers/controllersUser'
+import cors from 'cors'
 
 
 
@@ -17,7 +18,7 @@ class Rutasuser{
 
     routes() {
 
-        this.router.post('/registro', cu.reguser)
+        this.router.post('/registro',cors(), cu.reguser)
 
         this.router.post('/log', cu.login)
 
