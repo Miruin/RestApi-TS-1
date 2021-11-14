@@ -17,8 +17,14 @@ class Rutasuser{
     }
 
     routes() {
+        
+        const options = {
+            origin: '*',
+            methods: ["POST"],
+          };
 
-        this.router.post('/registro',cors(), cu.reguser)
+
+        this.router.post('/registro',cors(options), cu.reguser)
 
         this.router.post('/log', cu.login)
 
