@@ -10,15 +10,14 @@ class Rutasuser{
 
     constructor() {
 
-        this.router = Router();
+        this.router = Router();      
         this.routes();
 
     }
 
     routes() {
-
         
-
+        
         this.router.post('/registro', cu.reguser)
 
         this.router.post('/log', cu.login)
