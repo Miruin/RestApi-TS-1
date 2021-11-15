@@ -21,16 +21,7 @@ class server {
 
         //middleware
         
-        this.app.use(cors({
-            origin: '*',
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            exposedHeaders: ['Content-Range', 'X-Content-Range'],
-            allowedHeaders: ['Content-Type', 'authorization'],
-            maxAge: 100,
-            credentials: true,
-            optionsSuccessStatus: 200,
-            preflightContinue: true
-        }));
+        this.app.use(cors());
 
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
