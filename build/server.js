@@ -16,7 +16,6 @@ class server {
     config() {
         this.app.set('port', config_1.default.port);
         //middleware
-        this.app.use((0, cors_1.default)());
         this.app.use(express_1.default.urlencoded({ extended: false }));
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
