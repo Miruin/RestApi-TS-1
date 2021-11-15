@@ -20,9 +20,7 @@ class server {
         this.app.set('port', config.port);
 
         //middleware
-
-        this.app.use(express.urlencoded({ extended: false }));
-        this.app.use(express.json());
+        
         this.app.use(cors({
             origin: '*',
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -33,6 +31,9 @@ class server {
             optionsSuccessStatus: 200,
             preflightContinue: true
         }));
+
+        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(express.json());
 
     }
 
