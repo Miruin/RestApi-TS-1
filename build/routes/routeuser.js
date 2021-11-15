@@ -21,5 +21,4 @@ class Rutasuser {
     }
 }
 const ru = new Rutasuser();
-ru.routes();
 exports.default = ru.router;

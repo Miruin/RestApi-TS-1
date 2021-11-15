@@ -20,7 +20,7 @@ class Controllersuser {
             const pool = await getcon()
 
             if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
-               
+            console.log(req.body)
             let { nick, email, contrasena, na, fn} = req.body;
             
             if(nick == null || email == null || contrasena == null || na == null || fn == null) {

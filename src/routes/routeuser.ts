@@ -1,4 +1,4 @@
-import {Request, Response, Router} from 'express'
+import { Router} from 'express'
 import { auth } from '../helpers/service'
 import cu from '../controllers/controllersUser'
 
@@ -17,6 +17,8 @@ class Rutasuser{
 
     routes() {
 
+        
+
         this.router.post('/registro', cu.reguser)
 
         this.router.post('/log', cu.login)
@@ -34,7 +36,6 @@ class Rutasuser{
 }
 
 const ru = new Rutasuser();
-ru.routes();
 
 export default ru.router
 

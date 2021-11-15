@@ -26,6 +26,7 @@ class Controllersuser {
                 const pool = yield (0, connection_1.getcon)();
                 if (!pool)
                     return res.status(500).send({ msg: 'Error del servidor' });
+                console.log(req.body);
                 let { nick, email, contrasena, na, fn } = req.body;
                 if (nick == null || email == null || contrasena == null || na == null || fn == null) {
                     return res.status(400).json({ msg: 'No se han llenado los valores correctamente' });

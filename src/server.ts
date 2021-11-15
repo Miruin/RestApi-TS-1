@@ -1,11 +1,11 @@
-import express, { Application } from 'express'
+import express from 'express'
 import ru from './routes/routeuser';
 import config from './config/config';
+import cors from 'cors';
 
 class server {
 
     app: express.Application;
-
     constructor(){
 
         this.app = express();
@@ -18,16 +18,19 @@ class server {
 
         this.app.set('port', config.port);
 
+       
+
         //middleware
 
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
+        this.app.use(cors());
 
     }
 
     routes() {
 
-        this.app.use(ru);
+        this.app.use(ru)
 
     }
     
