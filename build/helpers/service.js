@@ -13,14 +13,12 @@ const fs_1 = __importDefault(require("fs"));
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         let urldirectorio = "libreria/manga/" + req.body.namemanga;
-        fs_1.default.mkdir(urldirectorio, (err) => {
-            if (err) {
-                console.error(err);
-            }
-            else {
-                console.log('directorio creado');
-            }
-        });
+        if (fs_1.default.existsSync(urldirectorio)) {
+            console.log('el directorio ya esta creado');
+        }
+        else {
+            fs_1.default.mkdirSync(urldirectorio, { recursive: true });
+        }
         cb(null, urldirectorio);
     },
     filename: function (req, file, cb) {

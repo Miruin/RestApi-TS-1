@@ -12,19 +12,15 @@ const storage = multer.diskStorage({
         
         let urldirectorio = "libreria/manga/"+req.body.namemanga;
 
-        fs.mkdir(urldirectorio, (err) =>{
+        if( fs.existsSync(urldirectorio) ){
 
-            if(err){
+            console.log('el directorio ya esta creado');
+            
+        } else {
 
-                console.error(err);             
+            fs.mkdirSync(urldirectorio, { recursive: true });
 
-            } else {
-                
-                console.log('directorio creado');
-                
-            }
-
-        });
+        }
     
         cb(null,urldirectorio);
 
