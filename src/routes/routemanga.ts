@@ -20,7 +20,7 @@ class Rutasmanga{
 
         this.router.get('/manga', auth, cm.obtenerMangas);
 
-        this.router.get('/manga/:namemanga', auth, cm.obtenerManga);
+        this.router.get('/manga/:id', auth, cm.obtenerManga);
 
         this.router.put('/manga', auth, upload.single('image'), cm.actualizarManga)
 

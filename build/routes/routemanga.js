@@ -15,7 +15,7 @@ class Rutasmanga {
     routes() {
         this.router.post('/manga', service_1.auth, service_2.upload.single('image'), controllersManga_1.default.crearManga);
         this.router.get('/manga', service_1.auth, controllersManga_1.default.obtenerMangas);
-        this.router.get('/manga/:namemanga', service_1.auth, controllersManga_1.default.obtenerManga);
+        this.router.get('/manga/:id', service_1.auth, controllersManga_1.default.obtenerManga);
         this.router.put('/manga', service_1.auth, service_2.upload.single('image'), controllersManga_1.default.actualizarManga);
     }
 }

@@ -110,13 +110,15 @@ class Controllersmanga {
 
     async obtenerManga(req: Request, res: Response): Promise<any>{
         
-        let namemanga = req.params.namemanga; 
+        let id = req.params.id; 
 
         try {
 
             const pool = await getcon();
 
-            const result = await getdatosmanga(pool, namemanga);
+            const result = await pool.request()
+            .input('idmanga', id)
+            .query(String(config.q13));
 
             pool.close();
             return res.status(200).send(result.recordset[0]);
@@ -134,9 +136,6 @@ class Controllersmanga {
 
         let { namemanga, generomanga, estadomanga, descripcionmanga } = req.body;
 
-        if (!generomanga || !estadomanga) 
-        return res.status(400).send({msg: 'Porfavor llenar los valores correctamente'});
-
         try {
 
             const pool = await getcon();
@@ -145,9 +144,9 @@ class Controllersmanga {
 
             let { id_manga, genero_manga, estado_manga, descripcion_manga  } = result.recordset[0];
             
-            if (req.file) {
+            if (result.recordset[0]) {
 
-                if (result.recordset[0]) {
+                if (req.file) {
                     
 
                     fs.readdir('libreria/manga/'+namemanga,(error, files) =>{
@@ -191,35 +190,37 @@ class Controllersmanga {
                     return res.status(200).send({msg: 'Se ha actualizado satisfactoriamente'});
                     
                 } else {
-                    
-                    pool.close();
-                    return res.status(400).send({msg: 'no se encuentra ese manga'});
+
+                    if (!generomanga || !estadomanga) 
+                    return res.status(400).send({msg: 'Porfavor llenar los valores correctamente'});
+
+                    if (generomanga == genero_manga && estadomanga == estado_manga && 
+                    descripcionmanga == descripcion_manga){
+        
+                        pool.close();
+                        return res.status(400).send({msg: 'No se ha cambiado ningun valor'});
+        
+                    }
+                            
+                    if (!descripcionmanga) descripcionmanga = 'No hay una Sinopsis';
+        
+                    await pool.request()
+                    .input('descripcionmanga', sql.VarChar, descripcionmanga)
+                    .input('estadomanga', sql.VarChar, estadomanga)
+                    .input('generomanga', sql.VarChar, generomanga)
+                    .input('idmanga', id_manga)
+                    .query(String(config.q11));
+        
+                    pool.close;
+                    return res.status(200).send({msg: 'Se ha actualizado satisfactoriamente'});
                     
                 }
                 
             } else {
-
-
-                if (generomanga == genero_manga && estadomanga == estado_manga && 
-                descripcionmanga == descripcion_manga){
-
-                    pool.close();
-                    return res.status(400).send({msg: 'No se ha cambiado ningun valor'});
-
-                }
-                    
-                if (!descripcionmanga) descripcionmanga = 'No hay una Sinopsis';
-
-                await pool.request()
-                .input('descripcionmanga', sql.VarChar, descripcionmanga)
-                .input('estadomanga', sql.VarChar, estadomanga)
-                .input('generomanga', sql.VarChar, generomanga)
-                .input('idmanga', id_manga)
-                .query(String(config.q11));
-
-                pool.close;
-                return res.status(200).send({msg: 'Se ha actualizado satisfactoriamente'});
                 
+                pool.close();
+                return res.status(400).send({msg: 'no se encuentra ese manga'});
+
             }
             
         } catch (error) {
