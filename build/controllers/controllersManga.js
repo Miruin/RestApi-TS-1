@@ -39,7 +39,6 @@ class Controllersmanga {
                         return res.status(400).send({ msg: 'Este manga ya existe' });
                     }
                     else {
-                        console.log('hasta a hora todo bien x1');
                         yield pool.request()
                             .input('namemanga', mssql_1.default.VarChar, namemanga)
                             .input('generomanga', mssql_1.default.VarChar, generomanga)
@@ -47,15 +46,16 @@ class Controllersmanga {
                             .input('descripcionmanga', mssql_1.default.VarChar, descripcionmanga)
                             .input('imgurlmanga', mssql_1.default.VarChar, urlarchivo)
                             .query(String(config_1.default.q7));
-                        console.log('hasta a hora todo bien x2');
                         const result = yield (0, connection_1.getdatosmanga)(pool, namemanga);
-                        let id = result.recordset[0].id_manga;
-                        console.log(id);
-                        yield pool.request()
-                            .input('idmanga', mssql_1.default.Int, id)
-                            .input('nick', mssql_1.default.VarChar, req.user)
-                            .query(String(config_1.default.q9));
-                        console.log('hasta a hora todo bien x3');
+                        if (result.recordset[0]) {
+                            let id = result.recordset[0].id_manga;
+                            yield pool.request()
+                                .input('idmanga', mssql_1.default.Int, id)
+                                .input('nick', mssql_1.default.VarChar, req.user)
+                                .query(String(config_1.default.q9));
+                            console.log('hasta a hora todo bien x1');
+                        }
+                        console.log('hasta a hora todo bien x2');
                         pool.close();
                         return res.status(200).send({ msg: 'El manga se ha registrado satisfactoriamente' });
                     }
