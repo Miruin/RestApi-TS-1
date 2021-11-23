@@ -13,7 +13,6 @@ class Controllersmanga {
     async crearManga(req: Request, res: Response): Promise<any> {
 
         let { generomanga, namemanga, descripcionmanga, estadomanga } = req.body;
-
         let urlarchivo = "https://restapi-mr.herokuapp.com/manga/"+namemanga+"/"+req.file?.filename; 
         
         try {
@@ -56,7 +55,10 @@ class Controllersmanga {
                         .input('idmanga', sql.Int, id)
                         .input('nick', sql.VarChar, req.user)
                         .query(String(config.q9));
-                        
+
+                        pool.close();
+                        return res.status(200).send({msg: 'Se ha registrado el manga satisfactoriamente'});
+                                 
                     } else {
 
                         pool.close();

@@ -53,6 +53,8 @@ class Controllersmanga {
                                 .input('idmanga', mssql_1.default.Int, id)
                                 .input('nick', mssql_1.default.VarChar, req.user)
                                 .query(String(config_1.default.q9));
+                            pool.close();
+                            return res.status(200).send({ msg: 'Se ha registrado el manga satisfactoriamente' });
                         }
                         else {
                             pool.close();
