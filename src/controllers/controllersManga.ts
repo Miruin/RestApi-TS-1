@@ -13,7 +13,7 @@ class Controllersmanga {
     async crearManga(req: Request, res: Response): Promise<any> {
 
         let { generomanga, namemanga, descripcionmanga, estadomanga } = req.body;
-        
+
         let urlarchivo = "https://restapi-mr.herokuapp.com/manga/"+namemanga+"/"+req.file?.filename; 
         
         try {
@@ -167,7 +167,7 @@ class Controllersmanga {
             
                     });
 
-                    let urlarchivo = "http://localhost:8080/manga/"+namemanga+"/"+req.file?.filename;
+                    let urlarchivo = "https://restapi-mr.herokuapp.com/manga/"+namemanga+"/"+req.file?.filename;
 
                     if (!descripcionmanga) descripcionmanga = 'No hay una Sinopsis';
 

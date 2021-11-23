@@ -124,7 +124,7 @@ class Controllersmanga {
                                 }
                             });
                         });
-                        let urlarchivo = "http://localhost:8080/manga/" + namemanga + "/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename);
+                        let urlarchivo = "https://restapi-mr.herokuapp.com/manga/" + namemanga + "/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename);
                         if (!descripcionmanga)
                             descripcionmanga = 'No hay una Sinopsis';
                         yield pool.request()
