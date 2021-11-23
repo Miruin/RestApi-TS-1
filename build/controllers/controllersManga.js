@@ -23,7 +23,7 @@ class Controllersmanga {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             let { generomanga, namemanga, descripcionmanga, estadomanga } = req.body;
-            let urlarchivo = "http://localhost:8080/manga/" + namemanga + "/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename);
+            let urlarchivo = "https://restapi-mr.herokuapp.com/manga/" + namemanga + "/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename);
             try {
                 const pool = yield (0, connection_1.getcon)();
                 if (!namemanga || !generomanga || !estadomanga || !req.file) {
