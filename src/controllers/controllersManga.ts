@@ -56,15 +56,13 @@ class Controllersmanga {
                         .input('idmanga', sql.Int, id)
                         .input('nick', sql.VarChar, req.user)
                         .query(String(config.q9));
-
-                        console.log('hasta a hora todo bien x1');
                         
-                    }
+                    } else {
 
-                    console.log('hasta a hora todo bien x2');
-                    
-                    pool.close();
-                    return res.status(200).send({msg: 'El manga se ha registrado satisfactoriamente'});
+                        pool.close();
+                        return res.status(500).send({msg: 'Error en el servidor no se ha registrado el manga'});
+
+                    }
                     
                 }  
 
