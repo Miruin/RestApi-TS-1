@@ -37,6 +37,7 @@ class Controllersmanga {
                     return res.status(400).send({msg: 'Este manga ya existe'});
                     
                 } else {
+                    console.log('hasta a hora todo bien x1');
 
                     await pool.request()
                     .input('namemanga', sql.VarChar, namemanga)
@@ -45,16 +46,22 @@ class Controllersmanga {
                     .input('descripcionmanga', sql.VarChar, descripcionmanga)
                     .input('imgurlmanga', sql.VarChar, urlarchivo)
                     .query(String(config.q7));
+
+                    console.log('hasta a hora todo bien x2');
                 
                     const result = await getdatosmanga(pool, namemanga);
 
                     let id = result.recordset[0].id_manga; 
 
+                    console.log(id);
+                    
                     await pool.request()
                     .input('idmanga', sql.Int, id)
                     .input('nick', sql.VarChar, req.user)
                     .query(String(config.q9));
 
+                    console.log('hasta a hora todo bien x3');
+                    
                     pool.close();
                     return res.status(200).send({msg: 'El manga se ha registrado satisfactoriamente'});
                     
