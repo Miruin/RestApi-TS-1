@@ -120,6 +120,13 @@ class Controllersmanga {
             .input('idmanga', id)
             .query(String(config.q13));
 
+            if(!result.recordset[0]){
+
+                pool.close();
+                return res.status(500).send({msg:"Este manga no esta registrado"});
+                
+            }
+
             pool.close();
             return res.status(200).send(result.recordset[0]);
             
