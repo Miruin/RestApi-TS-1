@@ -1,50 +1,50 @@
+import { Response } from 'express';
 import sql from 'mssql';
 import config from '../config/config';
 
-
 export async function getcon(){
 
-    try{
+    const pool = await sql.connect({
 
-        const pool = await sql.connect({
-            user: config.dbuser,
-            password: config.dbpw,
-            server: config.dbserver,
-            database: config.dbdatabase,
-            options: { 
-                encrypt: true,
-                trustServerCertificate: true,
-                cryptoCredentialsDetails: {
-                    minVersion: 'TLSv1'
-                }
+        user: config.dbuser,
+        password: config.dbpw,
+        server: config.dbserver,
+        database: config.dbdatabase,
+        options: { 
+
+            encrypt: true,
+            trustServerCertificate: true,
+            cryptoCredentialsDetails: {
+
+                minVersion: 'TLSv1'
+
             }
+
+        }
         
-        });
-        return pool;
+    });
+    return pool;
 
-    } catch(error) {
-
-        console.error(error);
-
-    }
-    
 };
 
 export async function getdatosuser(p: sql.ConnectionPool , nickname: string){
 
-    try {       
-
-        const result = await p.request()
-        .input('nick', nickname)
-        .query(String(config.q2));
+    const result = await p.request()
+    .input('nick', nickname)
+    .query(String(config.q2));
         
-        return result;
+    return result;
 
-    } catch (error) {
+}
+
+export async function getdatosmanga(p: sql.ConnectionPool , namem: string) {    
+
+    const result = await p.request()
+    .input('namemanga', namem)
+    .query(String(config.q8));
         
-        console.error(error);
-    
-    }     
+    return result;   
+   
 }
 
 

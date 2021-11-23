@@ -24,17 +24,12 @@ class Controllersuser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
-                console.log(req.body);
                 let { nick, email, contrasena, na, fn } = req.body;
                 if (nick == null || email == null || contrasena == null || na == null || fn == null) {
                     return res.status(400).json({ msg: 'No se han llenado los valores correctamente' });
                 }
                 else {
                     const result = yield (0, connection_1.getdatosuser)(pool, nick);
-                    if (!result)
-                        return res.status(500).send({ msg: 'Error del servidor' });
                     if (result.recordset[0]) {
                         pool.close();
                         return res.status(400).send({ msg: 'Ya se esta usando este usuario' });
@@ -64,16 +59,12 @@ class Controllersuser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 let { nick, contrasena } = req.body;
                 if (nick == null || contrasena == null) {
                     return res.status(400).send({ msg: 'No se han llenado los valores correctamente' });
                 }
                 else {
                     const result = yield (0, connection_1.getdatosuser)(pool, nick);
-                    if (!result)
-                        return res.status(500).send({ msg: 'Error del servidor' });
                     if (result.recordset[0]) {
                         const pwv = yield bcryptjs_1.default.compare(contrasena, result.recordset[0].pw_usuario);
                         if (pwv) {
@@ -101,11 +92,7 @@ class Controllersuser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 const result = yield (0, connection_1.getdatosuser)(pool, String(req.user));
-                if (!result)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 let nick = result.recordset[0].nick_usuario;
                 let email = result.recordset[0].email_usuario;
                 let na = result.recordset[0].na_usuario;
@@ -124,20 +111,15 @@ class Controllersuser {
             try {
                 let { nick, email, na, fn } = req.body;
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
-                const result1 = yield (0, connection_1.getdatosuser)(pool, String(req.user));
-                if (!result1)
-                    return res.status(500).send({ msg: 'Error del servidor' });
-                if (nick == result1.recordset[0].nick_usuario && email == result1.recordset[0].email_usuario &&
-                    na == result1.recordset[0].na_usuario && fn == result1.recordset[0].fn_usuario) {
+                const result = yield (0, connection_1.getdatosuser)(pool, String(req.user));
+                if (nick == result.recordset[0].nick_usuario && email == result.recordset[0].email_usuario &&
+                    na == result.recordset[0].na_usuario && fn == result.recordset[0].fn_usuario) {
+                    pool.close();
                     return res.status(200).send({ msg: 'No se ha cambiado ningun valor...' });
                 }
                 else {
-                    const result2 = yield (0, connection_1.getdatosuser)(pool, nick);
-                    if (!result2)
-                        return res.status(500).send({ msg: 'Error del servidor' });
-                    if (result2.recordset[0]) {
+                    const result = yield (0, connection_1.getdatosuser)(pool, nick);
+                    if (result.recordset[0]) {
                         yield pool.request()
                             .input('email', mssql_1.default.VarChar, email)
                             .input('na', mssql_1.default.VarChar, na)
@@ -155,7 +137,7 @@ class Controllersuser {
                             .input('fn', mssql_1.default.VarChar, fn)
                             .input('nickname', req.user)
                             .query(String(config_1.default.q4));
-                        pool.close;
+                        pool.close();
                         return res.status(200).send({ token: (0, service_1.creartoken)(nick), msg: 'Se ha actualizado satisfactoriamente' });
                     }
                 }
@@ -170,11 +152,7 @@ class Controllersuser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 const result = yield (0, connection_1.getdatosuser)(pool, String(req.user));
-                if (!result)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 if (result.recordset[0]) {
                     return res.status(200).send({ msg: 'Tienes permiso para deslogearte' });
                 }
@@ -192,11 +170,7 @@ class Controllersuser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const pool = yield (0, connection_1.getcon)();
-                if (!pool)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 const result = yield (0, connection_1.getdatosuser)(pool, String(req.user));
-                if (!result)
-                    return res.status(500).send({ msg: 'Error del servidor' });
                 if (result.recordset[0]) {
                     yield pool.request()
                         .input('nick', req.user)

@@ -3,10 +3,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = exports.creartoken = void 0;
+exports.auth = exports.creartoken = exports.upload = void 0;
 const jwt_simple_1 = __importDefault(require("jwt-simple"));
 const moment_1 = __importDefault(require("moment"));
 const config_1 = __importDefault(require("../config/config"));
+const multer_1 = __importDefault(require("multer"));
+const mime_types_1 = __importDefault(require("mime-types"));
+const fs_1 = __importDefault(require("fs"));
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        let urldirectorio = "libreria/manga/" + req.body.namemanga;
+        fs_1.default.mkdir(urldirectorio, (err) => {
+            if (err) {
+                console.error(err);
+            }
+            else {
+                console.log('directorio creado');
+            }
+        });
+        cb(null, urldirectorio);
+    },
+    filename: function (req, file, cb) {
+        let urlarchivo = Date.now() + file.originalname + "." + mime_types_1.default.extension(file.mimetype);
+        cb(null, urlarchivo);
+    }
+});
+exports.upload = (0, multer_1.default)({
+    storage: storage
+});
 const creartoken = (usuario) => {
     const payload = {
         sub: usuario,
@@ -19,7 +43,6 @@ exports.creartoken = creartoken;
 //middleware
 const auth = (req, res, next) => {
     try {
-        let { nick } = req.body;
         if (!req.headers.authorization) {
             return res.status(403).send({ msg: 'No tienes autorizacion' });
         }

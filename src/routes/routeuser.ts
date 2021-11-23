@@ -1,8 +1,6 @@
-import { Router} from 'express'
-import { auth } from '../helpers/service'
-import cu from '../controllers/controllersUser'
-
-
+import { Router} from 'express';
+import { auth } from '../helpers/service';
+import cu from '../controllers/controllersUser';
 
 class Rutasuser{
 
@@ -17,18 +15,17 @@ class Rutasuser{
 
     routes() {
         
-        
-        this.router.post('/registro', cu.reguser)
+        this.router.post('/registro', cu.reguser);
 
-        this.router.post('/log', cu.login)
+        this.router.post('/log', cu.login);
 
-        this.router.get('/log', auth, cu.logout)
+        this.router.get('/log', auth, cu.logout);
 
-        this.router.get('/actualizar', auth, cu.datosuser)
+        this.router.get('/actualizar', auth, cu.datosuser);
 
-        this.router.put('/actualizar', auth, cu.moduser)
+        this.router.put('/actualizar', auth, cu.moduser);
 
-        this.router.delete('/eliminar', auth, cu.deluser)
+        this.router.delete('/eliminar', auth, cu.deluser);
 
     }
  
@@ -36,6 +33,6 @@ class Rutasuser{
 
 const ru = new Rutasuser();
 
-export default ru.router
+export default ru.router;
 
 

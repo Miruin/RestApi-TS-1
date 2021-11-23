@@ -14,5 +14,11 @@ exports.default = {
     q4: process.env.Q4,
     q5: process.env.Q5,
     q6: process.env.Q6,
+    q7: process.env.Q7,
+    q8: process.env.Q8,
+    q9: process.env.Q9,
+    q10: process.env.Q10,
+    q11: process.env.Q11,
+    q12: process.env.Q12,
     secrettoken: process.env.SECRET_TOKEN
 };

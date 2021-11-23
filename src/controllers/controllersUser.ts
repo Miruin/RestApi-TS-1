@@ -1,26 +1,22 @@
-import { Request, response, Response} from 'express';
-import sql, { Connection, ConnectionPool, IResult } from 'mssql'
+import { Request, Response} from 'express';
+import sql from 'mssql';
 import bcryptjs from 'bcryptjs';
 import { creartoken } from "../helpers/service";
 import config from "../config/config";
-import { getcon, getdatosuser } from '../database/connection'
-
-
+import { getcon, getdatosuser } from '../database/connection';
 
 class Controllersuser {
+
     constructor() {
         
     }
 
-    
     async reguser (req: Request, res: Response): Promise<any>{
        
         try {
 
-            const pool = await getcon()
+            const pool = await getcon();
 
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
-            console.log(req.body)
             let { nick, email, contrasena, na, fn} = req.body;
             
             if(nick == null || email == null || contrasena == null || na == null || fn == null) {
@@ -30,8 +26,6 @@ class Controllersuser {
             } else {
 
                 const result = await getdatosuser(pool, nick);
-
-                if (!result)  return res.status(500).send({msg: 'Error del servidor'})
 
                 if (result.recordset[0]) { 
                         
@@ -49,30 +43,28 @@ class Controllersuser {
                     .input('na', sql.VarChar, na)
                     .input('fn', sql.VarChar, fn)
                     .query(String(config.q1));
+
                     pool.close();
                     return res.status(200).send({msg: 'Se ha registrado satisfactoriamente'});
                     
-                    
                 }
+
             }
     
-        
-    
         } catch(e) {
+
             console.error(e);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
+
         }
     }
     
     
     async login(req: Request, res: Response): Promise<any> {
     
-    
         try {
     
             const pool = await getcon();
-
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
     
             let { nick, contrasena} = req.body;
     
@@ -82,28 +74,29 @@ class Controllersuser {
                 
             } else {
                 
-                const result = await getdatosuser(pool, nick)
-    
-                if (!result)  return res.status(500).send({msg: 'Error del servidor'})
+                const result = await getdatosuser(pool, nick);
     
                 if (result.recordset[0]) {
     
-                    const pwv = await bcryptjs.compare(contrasena, result.recordset[0].pw_usuario)
+                    const pwv = await bcryptjs.compare(contrasena, result.recordset[0].pw_usuario);
     
                     if (pwv) {
     
-                        pool.close()
-    
+                        pool.close();
                         return res.status(200).send({token: creartoken(nick), msg: 'Se ha iniciado secion satisfactoriamente', nickname: nick});
                         
                     } else {
+
                         pool.close();
                         return res.status(200).send({msg: 'La contrasena no coincide'});
+
                     }
     
                 } else {
+
                     pool.close();
                     return res.status(200).send({msg: 'No se ha encontrado el usuario'});
+
                 }
     
                 
@@ -113,7 +106,7 @@ class Controllersuser {
         } catch (error) {
             
             console.error(error);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
     
         }
     
@@ -124,11 +117,8 @@ class Controllersuser {
         try {
     
             const pool = await getcon();
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
 
             const result = await getdatosuser(pool, String(req.user));
-
-            if (!result)  return res.status(500).send({msg: 'Error del servidor'})
     
             let nick = result.recordset[0].nick_usuario;
             let email = result.recordset[0].email_usuario;
@@ -142,7 +132,7 @@ class Controllersuser {
         } catch (error) {
     
             console.error(error);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
             
         }
     }
@@ -151,28 +141,23 @@ class Controllersuser {
     
         try {
     
-            let { nick, email, na, fn} = req.body
+            let { nick, email, na, fn} = req.body;
     
-            const pool = await getcon()
+            const pool = await getcon();
 
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
-
-            const result1 = await getdatosuser(pool, String(req.user));
-
-            if (!result1)  return res.status(500).send({msg: 'Error del servidor'})
+            const result = await getdatosuser(pool, String(req.user));
     
-            if (nick == result1.recordset[0].nick_usuario && email == result1.recordset[0].email_usuario &&
-                na == result1.recordset[0].na_usuario && fn == result1.recordset[0].fn_usuario) {
+            if (nick == result.recordset[0].nick_usuario && email == result.recordset[0].email_usuario &&
+                na == result.recordset[0].na_usuario && fn == result.recordset[0].fn_usuario) {
     
-                    return res.status(200).send({msg: 'No se ha cambiado ningun valor...'})
+                pool.close();
+                return res.status(200).send({msg: 'No se ha cambiado ningun valor...'});
                 
             } else {
     
-                const result2 = await getdatosuser(pool, nick);
-
-                if (!result2)  return res.status(500).send({msg: 'Error del servidor'})
+                const result = await getdatosuser(pool, nick);
                 
-                if (result2.recordset[0]) {
+                if (result.recordset[0]) {
     
     
                     await pool.request()
@@ -181,9 +166,10 @@ class Controllersuser {
                     .input('fn', sql.VarChar, fn)
                     .input('nickname', req.user)
                     .query(String(config.q5));
+                    
                     pool.close();
-    
                     return res.status(200).send({msg: 'Se ha actualizado satisfactoriamente'});
+
                 } else {
     
                     await pool.request()
@@ -193,9 +179,9 @@ class Controllersuser {
                     .input('fn', sql.VarChar, fn)
                     .input('nickname', req.user)
                     .query(String(config.q4));
-                    pool.close
-    
-                    return res.status(200).send({token: creartoken(nick), msg: 'Se ha actualizado satisfactoriamente'})
+
+                    pool.close();
+                    return res.status(200).send({token: creartoken(nick), msg: 'Se ha actualizado satisfactoriamente'});
                     
                 }
     
@@ -205,7 +191,7 @@ class Controllersuser {
         } catch (error) {
     
             console.error(error);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
             
         }
     }
@@ -217,26 +203,22 @@ class Controllersuser {
 
             const pool = await getcon();
 
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
-
             const result = await getdatosuser(pool, String(req.user));
-
-            if (!result)  return res.status(500).send({msg: 'Error del servidor'})
         
             if (result.recordset[0]) {
         
-                return res.status(200).send({msg: 'Tienes permiso para deslogearte'})
+                return res.status(200).send({msg: 'Tienes permiso para deslogearte'});
         
             } else {
         
-                return res.status(500).send({msg: 'No se encuentra este usuario en la DB'})
+                return res.status(500).send({msg: 'No se encuentra este usuario en la DB'});
         
             }
             
         } catch (error) {
 
             console.error(error);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
             
         }
         
@@ -248,30 +230,28 @@ class Controllersuser {
     
             const pool = await getcon();
 
-            if (!pool)  return res.status(500).send({msg: 'Error del servidor'})
-
             const result = await getdatosuser(pool, String(req.user));
-
-            if (!result)  return res.status(500).send({msg: 'Error del servidor'})
     
             if (result.recordset[0]) {
     
                 await pool.request()
                 .input('nick', req.user)
-                .query(String(config.q6))
-                pool.close()
-            
-                return res.status(200).send({msg: 'El usuario se ha eliminado'})
+                .query(String(config.q6));
+
+                pool.close();
+                return res.status(200).send({msg: 'El usuario se ha eliminado'});
+
             } else {
     
                 pool.close()
-                return res.status(400).send({msg: 'No se encontro el usuario'})
+                return res.status(400).send({msg: 'No se encontro el usuario'});
+
             }
             
         } catch (error) {
     
             console.error(error);
-            return res.status(500).send({msg: 'Error en el servidor'})
+            return res.status(500).send({msg: 'Error en el servidor'});
             
         }
     
@@ -279,6 +259,6 @@ class Controllersuser {
 }
 
 
-const cu = new Controllersuser()
+const cu = new Controllersuser();
 
-export default cu
+export default cu;

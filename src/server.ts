@@ -2,10 +2,12 @@ import express from 'express'
 import ru from './routes/routeuser';
 import config from './config/config';
 import cors from 'cors'
+import rutam from './routes/routemanga'
 
 class server {
 
     app: express.Application;
+
     constructor(){
 
         this.app = express();
@@ -17,19 +19,20 @@ class server {
     config() {
 
         this.app.set('port', config.port);
-
        
-
         //middleware
 
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
+        this.app.use(express.static('libreria'));
         this.app.use(cors());
+        
     }
 
     routes() {
 
-        this.app.use(ru)
+        this.app.use(ru);
+        this.app.use(rutam);
 
     }
     
@@ -44,5 +47,5 @@ class server {
 
 }
 
-const serv = new server()
+const serv = new server();
 serv.start();

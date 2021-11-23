@@ -12,45 +12,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getdatosuser = exports.getcon = void 0;
+exports.getdatosmanga = exports.getdatosuser = exports.getcon = void 0;
 const mssql_1 = __importDefault(require("mssql"));
 const config_1 = __importDefault(require("../config/config"));
 function getcon() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const pool = yield mssql_1.default.connect({
-                user: config_1.default.dbuser,
-                password: config_1.default.dbpw,
-                server: config_1.default.dbserver,
-                database: config_1.default.dbdatabase,
-                options: {
-                    encrypt: true,
-                    trustServerCertificate: true,
-                    cryptoCredentialsDetails: {
-                        minVersion: 'TLSv1'
-                    }
+        const pool = yield mssql_1.default.connect({
+            user: config_1.default.dbuser,
+            password: config_1.default.dbpw,
+            server: config_1.default.dbserver,
+            database: config_1.default.dbdatabase,
+            options: {
+                encrypt: true,
+                trustServerCertificate: true,
+                cryptoCredentialsDetails: {
+                    minVersion: 'TLSv1'
                 }
-            });
-            return pool;
-        }
-        catch (error) {
-            console.error(error);
-        }
+            }
+        });
+        return pool;
     });
 }
 exports.getcon = getcon;
 ;
 function getdatosuser(p, nickname) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const result = yield p.request()
-                .input('nick', nickname)
-                .query(String(config_1.default.q2));
-            return result;
-        }
-        catch (error) {
-            console.error(error);
-        }
+        const result = yield p.request()
+            .input('nick', nickname)
+            .query(String(config_1.default.q2));
+        return result;
     });
 }
 exports.getdatosuser = getdatosuser;
+function getdatosmanga(p, namem) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const result = yield p.request()
+            .input('namemanga', namem)
+            .query(String(config_1.default.q8));
+        return result;
+    });
+}
+exports.getdatosmanga = getdatosmanga;
