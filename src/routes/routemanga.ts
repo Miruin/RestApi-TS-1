@@ -16,7 +16,7 @@ class Rutasmanga{
    
     routes() {
         
-        this.router.post('/manga', auth, upload.single('image'), cm.crearManga);
+        this.router.post('/manga', upload.single('image'), cm.crearManga);
 
         this.router.get('/manga', auth, cm.obtenerMangas);
 
