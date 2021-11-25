@@ -48,11 +48,12 @@ class Controllersmanga {
                             .query(String(config_1.default.q7));
                         const result = yield (0, connection_1.getdatosmanga)(pool, namemanga);
                         if (result.recordset[0]) {
-                            let id = result.recordset[0].id_manga;
-                            yield pool.request()
-                                .input('idmanga', mssql_1.default.Int, id)
-                                .input('nick', mssql_1.default.VarChar, req.user)
-                                .query(String(config_1.default.q9));
+                            /*let id = result.recordset[0].id_manga;
+                        
+                            await pool.request()
+                            .input('idmanga', sql.Int, id)
+                            .input('nick', sql.VarChar, req.user)
+                            .query(String(config.q9));*/
                             pool.close();
                             return res.status(200).send({ msg: 'Se ha registrado el manga satisfactoriamente' });
                         }
