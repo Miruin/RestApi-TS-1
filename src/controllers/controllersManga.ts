@@ -22,7 +22,7 @@ class Controllersmanga {
             if (!namemanga || !generomanga || !estadomanga || !req.file) {
 
                 pool.close();    
-                return res.status(400).send({ msg: 'No se han llendao los campos'});
+                return res.status(400).send({ msg: 'No se han llenado los campos'});
                 
             } else {
 
